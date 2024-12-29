@@ -13,7 +13,7 @@ player_speed = 2
 #ray casting params
 view_field = pi / 3
 view_field_half = view_field / 2
-nums_rays = 120
+nums_rays = 300
 d_rays = view_field / nums_rays
 draw_distance = 1200
 distance_to_wall = nums_rays / tan(view_field_half)

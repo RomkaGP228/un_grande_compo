@@ -2,6 +2,7 @@ from data.map import *
 from data.player import *
 from math import sin, cos
 from data.ray_casting import *
+from data.draw import Draw
 if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption('Un Grande Compo')
@@ -9,6 +10,7 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode(window_size)
     clock = pygame.time.Clock()
     player = Player()
+    draw_example = Draw(screen, world_map)
     running = True
     while running:
         for event in pygame.event.get():
@@ -17,7 +19,8 @@ if __name__ == '__main__':
 
         player.move()
         screen.fill(black)
-        ray_casting(screen, player.pos, player.angle)
+        draw_example.draw_world(player.pos, player.angle)
+        draw_example.draw_fps(clock)
         # pygame.draw.circle(screen, white, player.pos, 20)
         # pygame.draw.line(screen, white, player.pos, (player.x + cos(player.angle) * 1000,player.y + sin(player.angle) * 1000))
         # for x, y in world_map:
