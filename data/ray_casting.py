@@ -47,9 +47,9 @@ def ray_casting(screen, player_pos, player_angle):
             dpth = dpth_hor
         dpth *= cos(player_angle - angle)
         wall_ray_height = (distance_to_wall * wall_size) / dpth
-        color = 255 / (dpth ** 2 * 0.00005 + 1)
+        color = 255 / (dpth ** 2 * 0.00001 + 1)
         pygame.draw.rect(screen, (color, color, color), (
-        ray * window_width / nums_rays, (window_height // 2) - wall_ray_height // 2, window_width / nums_rays,
+        ray * (window_width // nums_rays), (window_height // 2) - (wall_ray_height // 2), window_width // nums_rays,
         wall_ray_height))
         angle += d_rays
 

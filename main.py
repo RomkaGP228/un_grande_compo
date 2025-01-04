@@ -12,6 +12,8 @@ if __name__ == '__main__':
     player = Player()
     draw_example = Draw(screen, world_map)
     running = True
+    draw_example.menu()
+    print(world_map)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
