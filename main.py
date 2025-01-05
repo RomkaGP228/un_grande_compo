@@ -1,3 +1,5 @@
+import pygame.key
+
 from data.map import *
 from data.player import *
 from math import sin, cos
@@ -15,11 +17,17 @@ if __name__ == '__main__':
     draw_example.menu()
     print(world_map)
     while running:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+        player.movement()
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            pygame.mouse.set_visible(True)
+            draw_example.pause()
 
-        player.move()
+        else:
+            pygame.mouse.set_visible(False)
         screen.fill(black)
         draw_example.draw_world(player.pos, player.angle)
         draw_example.draw_fps(clock)
