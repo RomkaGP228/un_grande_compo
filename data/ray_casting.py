@@ -1,7 +1,4 @@
-from math import sin, cos, pi
-
-import pygame
-
+from math import sin, cos
 from data.params import *
 from data.map import world_map, wrld_width, wrld_height
 
@@ -49,10 +46,10 @@ def ray_casting(screen, player_pos, player_angle):
         else:
             dpth = dpth_hor
         dpth *= cos(player_angle - angle)
-        dpth = max(0.00001, dpth)
-        wall_ray_height = min(int(coeff / dpth), 2 * window_height)
-        color = 255 / (dpth ** 2 * 0.00000002 + 1)
-        pygame.draw.rect(screen, (color, color, color), (
+        dpth = max(dpth, 0.00001)
+        wall_ray_height = (distance_to_wall * wall_size) / dpth
+        color_wall = int(255 / (dpth ** 2 * 0.000002 + 1))
+        pygame.draw.rect(screen, (color_wall, color_wall, color_wall), (
             ray * scale, (window_height // 2) - (wall_ray_height // 2), scale,
             wall_ray_height))
         angle += d_rays

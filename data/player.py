@@ -1,7 +1,8 @@
-from math import sin, cos, pi
-
+from math import sin, cos
 
 from data.params import *
+
+
 class Player:
     def __init__(self):
         self.x, self.y = player_pos
@@ -38,6 +39,6 @@ class Player:
 
     def mouse_movement(self):
         if pygame.mouse.get_focused():
-             diff_mouse = pygame.mouse.get_pos()[0] - (window_width // 2)
-             pygame.mouse.set_pos((window_width // 2, window_height // 2))
-             self.angle += diff_mouse * self.sense
+            diff_mouse = pygame.mouse.get_pos()[0] - (window_width // 2)
+            pygame.mouse.set_pos((window_width // 2, window_height // 2))
+            self.angle += diff_mouse * self.sense
