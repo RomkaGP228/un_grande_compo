@@ -10,7 +10,6 @@ def mapping(x, y):
 def ray_casting(screen, player_pos, player_angle):
     angle = player_angle - view_field_half
     x0, y0 = player_pos
-    texture_verticle, texture_horizontal = 1, 1
     xam, yam = mapping(x0, y0)
     for ray in range(nums_rays):
         sin_a = sin(angle)
