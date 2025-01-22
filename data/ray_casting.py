@@ -1,13 +1,13 @@
 from math import sin, cos
 from data.params import *
-from data.map import world_map, wrld_width, wrld_height
+from data.map import wrld_width, wrld_height
 
 
 def mapping(x, y):
     return (x // wall_size) * wall_size, (y // wall_size) * wall_size
 
 
-def ray_casting(screen, player_pos, player_angle):
+def ray_casting(screen, player_pos, player_angle, world_map):
     angle = player_angle - view_field_half
     x0, y0 = player_pos
     xam, yam = mapping(x0, y0)

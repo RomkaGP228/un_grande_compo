@@ -17,8 +17,8 @@ class Draw:
         self.pause_picture = pygame.image.load(pathlib.PurePath('images/pause_image.png')).convert()
         self.menu_picture = pygame.image.load(pathlib.PurePath('images/menu_image.jpg')).convert()
 
-    def draw_world(self, player_pos, player_angle):
-        ray_casting(self.screen, player_pos, player_angle)
+    def draw_world(self, player_pos, player_angle, world_map):
+        ray_casting(self.screen, player_pos, player_angle, world_map)
 
     def draw_fps(self, clock):
         fps = str(int(clock.get_fps()))
