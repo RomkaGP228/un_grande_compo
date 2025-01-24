@@ -4,7 +4,7 @@ import pathlib
 
 
 
-with open(pathlib.PurePath("levels/levels.json"), mode='r') as json_map_file:
+with open(pathlib.PurePath("levels1/levels.json"), mode='r') as json_map_file:
     maps = json.load(json_map_file)
     first_map = maps["FirstMap"]
     second_map = maps["SecondMap"]
