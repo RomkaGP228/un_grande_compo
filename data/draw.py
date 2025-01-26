@@ -16,9 +16,15 @@ class Draw:
         self.pause_trigger = True
         self.pause_picture = pygame.image.load(pathlib.PurePath('images/pause_image.png')).convert()
         self.menu_picture = pygame.image.load(pathlib.PurePath('images/menu_image.jpg')).convert()
+        self.textures = {1: pygame.image.load(pathlib.PurePath("textures/img_4.jpg")).convert(),
+                         2: pygame.image.load(pathlib.PurePath("textures/img_4.jpg")).convert()}
 
-    def draw_world(self, player_pos, player_angle, world_map):
-        ray_casting(self.screen, player_pos, player_angle, world_map)
+    def draw_world(self, world_objs):
+        for i in sorted(world_objs, key= lambda x: x[0], reverse=True):
+            if i[0]:
+                _, obj, obj_pos = i
+                self.screen.blit(obj, obj_pos)
+
 
     def draw_fps(self, clock):
         fps = str(int(clock.get_fps()))
