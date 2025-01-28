@@ -12,7 +12,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     player = Player()
     sprites = SpriteClass()
-    main_map = first_map
+    main_map = second_map
     world_map = world_map_maker(main_map)
     draw_example = Draw(screen, world_map)
     running = True

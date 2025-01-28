@@ -15,9 +15,9 @@ white = pygame.Color("White")
 
 
 # player params
-player_pos = (window_width // 2, window_height // 2)
+player_pos = (150, 150)
 player_angle = 0
-player_speed = 5
+player_speed = 3
 
 # ray casting params
 view_field = pi / 3

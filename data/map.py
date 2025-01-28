@@ -24,7 +24,11 @@ def world_map_maker(new_map):
                     world_map[(k2 * wall_size, k1 * wall_size)] = 1
                 elif j == 2:
                     world_map[(k2 * wall_size, k1 * wall_size)] = 2
+                elif j == 3:
+                    world_map[(k2 * wall_size, k1 * wall_size)] = 3
+                elif j == 4:
+                    world_map[(k2 * wall_size, k1 * wall_size)] = 4
+                elif j == 5:
+                    world_map[(k2 * wall_size, k1 * wall_size)] = 5
     print(collision_walls)
-
-
     return world_map

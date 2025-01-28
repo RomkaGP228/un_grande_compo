@@ -49,7 +49,7 @@ def ray_casting(player, world_map, textures):
                 break
             y += dy * wall_size
 
-        depth, offset, texture = (dpth_vert, y_vert, texture_hor) if dpth_vert < dpth_hor else (dpth_hor, x_hor, texture_vert)
+        depth, offset, texture = (dpth_vert, y_vert, texture_vert) if dpth_vert < dpth_hor else (dpth_hor, x_hor, texture_hor)
         offset = int(offset) % wall_size
         depth *= cos(player.angle - angle)
         depth = max(depth, 0.00001)
