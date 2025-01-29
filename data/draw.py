@@ -8,8 +8,9 @@ from data.button import ButtonClass
 
 
 class Draw:
-    def __init__(self, screen, world_map):
+    def __init__(self, screen, world_map, player):
         self.screen = screen
+        self.player = player
         self.world_map = world_map
         self.font = pygame.font.SysFont('Tahoma', 36, bold=True)
         self.menu_trigger = True
@@ -76,15 +77,23 @@ class Draw:
         menu_button = ButtonClass(self.screen, 420, 260, width=400, height=100,
                                   image_path=pathlib.PurePath('images/button_start_image.png'), text='MENU',
                                   font=button_font)
+        settings_button = ButtonClass(self.screen, 420, 260, width=400, height=100,
+                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='MENU',
+                                  font=button_font)
+        save_button = ButtonClass(self.screen, 420, 600, width=100, height=100,
+                                  image_path=pathlib.PurePath('images/save_image.png'), text='',
+                                  font=button_font)
         while self.pause_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
             self.screen.blit(self.pause_picture, (0, 0), (-415, -137, window_width, window_height))
+            self.screen.blit(self.pause_picture, (0, 0), (-415, -400, window_width, window_height))
             continue_button.draw()
             exit_button.draw()
             menu_button.draw()
+            save_button.draw()
             label = label_font.render('Pause', 1, pygame.Color('orange'))
             self.screen.blit(label, (443, 100))
             curr_pos = pygame.mouse.get_pos()
@@ -102,6 +111,11 @@ class Draw:
                     self.menu_trigger = True
                     self.menu()
                     return
+            elif save_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    saver(self.player.pos, self.player.angle)
+                    return
             elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 self.pause_trigger = False
             pygame.display.flip()
+

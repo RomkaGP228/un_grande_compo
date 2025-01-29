@@ -2,12 +2,13 @@ import math
 
 import pygame
 from math import pi, tan
-
+from data.saver import upload, first_time, saver
 
 # window settings
 window_width = 1200
 window_height = 700
 
+first_time()
 
 # base colors
 black = pygame.Color("Black")
@@ -15,8 +16,7 @@ white = pygame.Color("White")
 
 
 # player params
-player_pos = (150, 150)
-player_angle = 0
+player_pos, player_angle = upload()
 player_speed = 3
 
 # ray casting params

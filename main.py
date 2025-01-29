@@ -3,6 +3,7 @@ from data.ray_casting import *
 from data.draw import Draw
 from data.map import world_map_maker, first_map, second_map
 from data.sprites import *
+from data.saver import *
 
 if __name__ == '__main__':
     pygame.init()
@@ -10,11 +11,13 @@ if __name__ == '__main__':
     window_size = window_width, window_height
     screen = pygame.display.set_mode(window_size)
     clock = pygame.time.Clock()
+    first_time()
+
     player = Player()
     sprites = SpriteClass()
     main_map = second_map
     world_map = world_map_maker(main_map)
-    draw_example = Draw(screen, world_map)
+    draw_example = Draw(screen, world_map, player)
     running = True
     draw_example.menu()
     while running:
