@@ -2,9 +2,10 @@ import pathlib
 import sys
 import pygame.font
 
-from data.ray_casting import ray_casting
 from data.params import *
 from data.button import ButtonClass
+from data.slider import Slider
+from data.saver import settings_saver, upload_settings
 
 
 class Draw:
@@ -15,6 +16,7 @@ class Draw:
         self.font = pygame.font.SysFont('Tahoma', 36, bold=True)
         self.menu_trigger = True
         self.pause_trigger = True
+        self.settings_trigger = True
         self.pause_picture = pygame.image.load(pathlib.PurePath('images/pause_image.png')).convert()
         self.menu_picture = pygame.image.load(pathlib.PurePath('images/menu_image.jpg')).convert()
         self.textures = {1: pygame.image.load(pathlib.PurePath("textures/img_7.jpg")).convert(),
@@ -77,8 +79,8 @@ class Draw:
         menu_button = ButtonClass(self.screen, 420, 260, width=400, height=100,
                                   image_path=pathlib.PurePath('images/button_start_image.png'), text='MENU',
                                   font=button_font)
-        settings_button = ButtonClass(self.screen, 420, 260, width=400, height=100,
-                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='MENU',
+        settings_button = ButtonClass(self.screen, 725, 600, width=100, height=100,
+                                  image_path=pathlib.PurePath('images/settings_image.png'), text='',
                                   font=button_font)
         save_button = ButtonClass(self.screen, 420, 600, width=100, height=100,
                                   image_path=pathlib.PurePath('images/save_image.png'), text='',
@@ -94,6 +96,7 @@ class Draw:
             exit_button.draw()
             menu_button.draw()
             save_button.draw()
+            settings_button.draw()
             label = label_font.render('Pause', 1, pygame.Color('orange'))
             self.screen.blit(label, (443, 100))
             curr_pos = pygame.mouse.get_pos()
@@ -115,7 +118,62 @@ class Draw:
                 if curr_click[0]:
                     saver(self.player.pos, self.player.angle)
                     return
+            elif settings_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    self.settings()
+                    return
             elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 self.pause_trigger = False
             pygame.display.flip()
+
+    def settings(self):
+        self.settings_trigger = True
+        label_font = pygame.font.Font('fonts/mneb.otf', 120)
+        button_font = pygame.font.Font('fonts/rafale_ru.otf', 60)
+        text_font = pygame.font.Font('fonts/mneb.otf', 50)
+        volume_slider = Slider(self.screen, 420, 350, 400, 50, 0, 100, upload_settings()[0])
+        sense_slider = Slider(self.screen, 420, 450, 400, 50, 0, 100, upload_settings()[1])
+        save_button = ButtonClass(self.screen, 420, 520, width=150, height=80,
+                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='SAVE',
+                                  font=button_font)
+        cancel_button = ButtonClass(self.screen, 670, 520, width=150, height=80,
+                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='QUIT',
+                                  font=button_font)
+        while self.settings_trigger:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                sense_slider.handle_event(event)
+                volume_slider.handle_event(event)
+            self.screen.blit(self.pause_picture, (0, 0), (-415, -137, window_width, window_height))
+            self.screen.blit(self.pause_picture, (0, 0), (-415, -400, window_width, window_height))
+            volume_slider.draw()
+            sense_slider.draw()
+            save_button.draw()
+            cancel_button.draw()
+            label = label_font.render('Settings', 1, pygame.Color('orange'))
+            volume_label = text_font.render('Volume', 1, black)
+            sensitivity_label = text_font.render('Sensitivity', 1, black)
+            self.screen.blit(volume_label, (420, 300))
+            self.screen.blit(sensitivity_label, (420, 400))
+            self.screen.blit(label, (418, 115))
+            curr_pos = pygame.mouse.get_pos()
+            curr_click = pygame.mouse.get_pressed()
+            if cancel_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    self.settings_trigger = False
+            elif save_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    settings_saver(volume_slider.get_value(), sense_slider.get_value())
+                    self.player.update()
+                    return
+            elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                self.settings_trigger = False
+            pygame.display.flip()
+
+
+
+
+
 

@@ -10,10 +10,18 @@ def first_time():
     angle NUMERIC NOT NULL,
     time  TEXT NOT NULL UNIQUE
 );""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS settings (
+        volume TEXT,
+        sensitivity TEXT
+    );""")
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
     data = cur.fetchall()
     if len(data) == 0:
         saver('(150, 150)', 90)
+    cur.execute("SELECT * FROM settings DESC LIMIT 1")
+    data_set = cur.fetchall()
+    if len(data_set) == 0:
+        cur.execute("""INSERT INTO settings (volume, sensitivity) VALUES (?, ?)""", (10, 1))
     connection.commit()
     connection.close()
 
@@ -30,9 +38,21 @@ def upload():
     cur = connection.cursor()
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
     data = cur.fetchall()
-    print(data)
     player_pos_new = tuple(map(int, data[0][0][1:-1].split(', ')))
-    print(player_pos_new)
     player_angle_new = data[0][1]
     return player_pos_new, player_angle_new
 
+def settings_saver(volume, sense):
+    connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
+    cur = connection.cursor()
+    cur.execute("UPDATE settings SET volume = ?, sensitivity = ?",
+                (volume, sense))
+    connection.commit()
+    connection.close()
+
+def upload_settings():
+    connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM settings DESC LIMIT 1")
+    data = cur.fetchall()
+    return data[0][0], data[0][1]

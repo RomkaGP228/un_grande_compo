@@ -1,14 +1,14 @@
-from math import sin, cos
+from math import sin, cos, sqrt
 
 from data.params import *
 from data.map import collision_walls
-
+from data.saver import upload_settings
 
 class Player:
     def __init__(self):
         self.x, self.y = player_pos
         self.angle = player_angle
-        self.sense = 0.005
+        self.sense = 0.0006 * float(upload_settings()[-1])
         self.side = 50
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
 
@@ -78,5 +78,8 @@ class Player:
             diff_mouse = pygame.mouse.get_pos()[0] - (window_width // 2)
             pygame.mouse.set_pos((window_width // 2, window_height // 2))
             self.angle += diff_mouse * self.sense
+    def update(self):
+        self.sense = 0.0006 * (float(upload_settings()[-1]) + 1)
+
 
 
