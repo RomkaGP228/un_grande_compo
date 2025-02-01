@@ -1,4 +1,4 @@
-from math import sin, cos, sqrt
+from math import sin, cos
 
 from data.params import *
 from data.map import collision_walls
@@ -9,7 +9,7 @@ class Player:
     def __init__(self):
         self.x, self.y = player_pos
         self.angle = player_angle
-        self.sense = 0.0006 * float(upload_settings()[-1])
+        self.sense = 0.00006 * (float(upload_settings()[-1]) + 1)
         self.side = 50
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
 

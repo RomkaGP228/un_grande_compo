@@ -1,10 +1,6 @@
 import sqlite3
 import pathlib
-from datetime import datetime, timedelta
-
-import pygame.mixer
-
-from data.map import first_map
+from datetime import datetime
 import os
 
 
@@ -55,6 +51,7 @@ def upload():
     data = cur.fetchall()
     player_pos_new = tuple(map(int, data[0][0][1:-1].split(', ')))
     player_angle_new = data[0][1]
+    connection.close()
     return player_pos_new, player_angle_new
 
 
@@ -64,6 +61,7 @@ def upload_map():
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
     data = cur.fetchall()
     map_new = data[0][3]
+    connection.close()
     return map_new
 
 
@@ -81,6 +79,7 @@ def upload_settings():
     cur = connection.cursor()
     cur.execute("SELECT * FROM settings DESC LIMIT 1")
     data = cur.fetchall()
+    connection.close()
     return data[0][0], data[0][1]
 
 
@@ -90,4 +89,5 @@ def time_finder():
     cur.execute("SELECT * FROM base ORDER BY time LIMIT 1")
     time_start = datetime.strptime(cur.fetchall()[0][2], "%Y-%m-%d %H:%M:%S.%f")
     total_hours = (datetime.now() - time_start).total_seconds() / 3600
+    connection.close()
     return f"{total_hours:.2f}"

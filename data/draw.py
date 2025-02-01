@@ -1,3 +1,4 @@
+import os
 import pathlib
 import sys
 import pygame.font
@@ -5,7 +6,7 @@ import pygame.font
 from data.params import *
 from data.button import ButtonClass
 from data.slider import Slider
-from data.saver import settings_saver, upload_settings, time_finder
+from data.saver import settings_saver, upload_settings, time_finder, saver
 from data.music import volume_change
 
 
@@ -206,5 +207,7 @@ class Draw:
             if exit_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
                     pygame.quit()
+                    os.remove(pathlib.PurePath("db/database.db"))
+                    os.rmdir(pathlib.PurePath("db"))
                     sys.exit()
             pygame.display.flip()

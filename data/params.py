@@ -2,7 +2,7 @@ import math
 
 import pygame
 from math import pi, tan
-from data.saver import upload, first_time, saver
+from data.saver import upload, first_time
 
 # window settings
 window_width = 1200

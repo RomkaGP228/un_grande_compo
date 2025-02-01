@@ -1,10 +1,11 @@
 from data.player import *
 from data.ray_casting import *
 from data.draw import Draw
-from data.map import world_map_maker, second_map, maps
+from data.map import world_map_maker, second_map, maps, first_map
 from data.sprites import *
 from data.saver import *
 from data.music import play_track
+
 
 if __name__ == '__main__':
     pygame.init()
