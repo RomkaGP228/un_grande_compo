@@ -15,6 +15,9 @@ class Player:
     @property
     def pos(self):
         return (int(self.x), int(self.y))
+    def set_pos(self, position_x, position_y):
+        self.x, self.y = position_x, position_y
+
 
     def detected_collision(self, dx, dy):
         next_rect = self.rect.copy()

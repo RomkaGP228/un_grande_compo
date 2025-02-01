@@ -9,13 +9,15 @@ with open(pathlib.PurePath("levels1/levels.json"), mode='r') as json_map_file:
     first_map = maps["FirstMap"]
     second_map = maps["SecondMap"]
 
-wrld_width = len(first_map[0]) * wall_size
-wrld_height = len(second_map) * wall_size
+wrld_width = len(first_map[0]) * 100
+wrld_height = len(second_map) * 100
 collision_walls = []
 
-
 def world_map_maker(new_map):
+    wall_size = 100
+    print(new_map)
     world_map = {}
+    collision_walls.clear()
     for k1, i in enumerate(new_map):
         for k2, j in enumerate(i):
             if j:

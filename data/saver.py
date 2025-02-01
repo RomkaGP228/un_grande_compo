@@ -1,6 +1,7 @@
 import sqlite3
 import pathlib
 from datetime import datetime
+from data.map import first_map
 
 def first_time():
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
@@ -8,7 +9,8 @@ def first_time():
     cur.execute("""CREATE TABLE IF NOT EXISTS base (
     pos   TEXT NOT NULL,
     angle NUMERIC NOT NULL,
-    time  TEXT NOT NULL UNIQUE
+    time  TEXT NOT NULL UNIQUE,
+    map TEXT NOT NULL
 );""")
     cur.execute("""CREATE TABLE IF NOT EXISTS settings (
         volume TEXT,
@@ -17,7 +19,7 @@ def first_time():
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
     data = cur.fetchall()
     if len(data) == 0:
-        saver('(150, 150)', 90)
+        saver('(150, 150)', 90, 'first_map')
     cur.execute("SELECT * FROM settings DESC LIMIT 1")
     data_set = cur.fetchall()
     if len(data_set) == 0:
@@ -26,10 +28,10 @@ def first_time():
     connection.close()
 
 
-def saver(player_position, player_anglenow):
+def saver(player_position, player_anglenow, map_now):
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
-    cur.execute("INSERT INTO base(pos, angle, time) VALUES (?, ?, ?)", (str(player_position), player_anglenow, datetime.now()))
+    cur.execute("INSERT INTO base(pos, angle, time, map) VALUES (?, ?, ?, ?)", (str(player_position), player_anglenow, datetime.now(), map_now))
     connection.commit()
     connection.close()
 

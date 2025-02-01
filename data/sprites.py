@@ -21,9 +21,9 @@ def load_image(name, colorkey=None):
 class SpriteClass:
     def __init__(self):
         self.sprites_list = {'barrel': load_image('test/img.png'),
-                             'guy': [load_image(f"guy/{i}.png", -1) for i in range(8)]}
-        self.obj_list = [SpriteObjClass(self.sprites_list['barrel'], True, (8.1, 5.2), -2, 0.8),
-                         SpriteObjClass(self.sprites_list["guy"], False, (8.8, 5.0), -2, 0.5)]
+                             'guy': [load_image(f"guy/{i}.png", -1) for i in range(8)],
+                             'portal': load_image(f'portal/portal.png', -1)}
+        self.obj_list = [SpriteObjClass(self.sprites_list['portal'], True, (8.7, 12.5), -3, 0.4)]
 
 
 

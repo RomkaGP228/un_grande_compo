@@ -9,21 +9,25 @@ from data.saver import settings_saver, upload_settings
 
 
 class Draw:
-    def __init__(self, screen, world_map, player):
+    def __init__(self, screen, world_map, player, map_name):
         self.screen = screen
+        self.map_name = map_name
         self.player = player
         self.world_map = world_map
         self.font = pygame.font.SysFont('Tahoma', 36, bold=True)
-        self.menu_trigger = True
-        self.pause_trigger = True
-        self.settings_trigger = True
+        self.menu_trigger = False
+        self.pause_trigger = False
+        self.settings_trigger = False
+        self.win_trigger = False
+        self.win_picture = pygame.image.load(pathlib.PurePath('images/end_image.jpg')).convert()
         self.pause_picture = pygame.image.load(pathlib.PurePath('images/pause_image.png')).convert()
         self.menu_picture = pygame.image.load(pathlib.PurePath('images/menu_image.jpg')).convert()
-        self.textures = {1: pygame.image.load(pathlib.PurePath("textures/img_7.jpg")).convert(),
-                         2: pygame.image.load(pathlib.PurePath("textures/img_3.jpg")).convert(),
-                         3: pygame.image.load(pathlib.PurePath("textures/img_3.jpg")).convert(),
-                         4: pygame.image.load(pathlib.PurePath("textures/img_3.jpg")).convert(),
-                         5: pygame.image.load(pathlib.PurePath("textures/img_3.jpg")).convert()}
+        self.textures = {1: pygame.image.load(pathlib.PurePath("textures/texture_1.jpg")).convert(),
+                         2: pygame.image.load(pathlib.PurePath("textures/texture_2.jpg")).convert(),
+                         3: pygame.image.load(pathlib.PurePath("textures/texture_3.jpg")).convert(),
+                         4: pygame.image.load(pathlib.PurePath("textures/texture_4.jpg")).convert(),
+                         5: pygame.image.load(pathlib.PurePath("textures/texture_5.jpg")).convert(),
+                         6: pygame.image.load(pathlib.PurePath("textures/texture_6.jpg")).convert()}
 
     def draw_world(self, world_objs):
         for i in sorted(world_objs, key=lambda x: x[0], reverse=True):
@@ -37,6 +41,7 @@ class Draw:
         self.screen.blit(fps_render, (window_width - 55, 0))
 
     def menu(self):
+        self.menu_trigger = True
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
         label_font = pygame.font.Font('fonts/mneb.otf', 145)
         start_button = ButtonClass(self.screen, 420, 380, width=400, height=100,
@@ -116,7 +121,7 @@ class Draw:
                     return
             elif save_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
-                    saver(self.player.pos, self.player.angle)
+                    saver(self.player.pos, self.player.angle, self.map_name)
                     return
             elif settings_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
@@ -124,6 +129,7 @@ class Draw:
                     return
             elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 self.pause_trigger = False
+                return
             pygame.display.flip()
 
     def settings(self):
@@ -171,6 +177,31 @@ class Draw:
             elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 self.settings_trigger = False
             pygame.display.flip()
+    def win(self):
+        print('you win')
+        self.win_trigger = True
+        button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
+        label_font = pygame.font.Font('fonts/mneb.otf', 145)
+        exit_button = ButtonClass(self.screen, 420, 500, width=400, height=100,
+                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='EXIT',
+                                  font=button_font)
+        while self.win_trigger:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            self.screen.blit(self.win_picture, (0, 0), (30, 0, window_width, window_height))
+            exit_button.draw()
+            label = label_font.render('Y0U 3SC4P3D', 1, pygame.Color('orange'))
+            self.screen.blit(label, (100, 50))
+            curr_pos = pygame.mouse.get_pos()
+            curr_click = pygame.mouse.get_pressed()
+            if exit_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    pygame.quit()
+                    sys.exit()
+            pygame.display.flip()
+
 
 
 
