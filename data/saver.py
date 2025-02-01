@@ -1,9 +1,20 @@
 import sqlite3
 import pathlib
-from datetime import datetime
+from datetime import datetime, timedelta
+
+import pygame.mixer
+
 from data.map import first_map
+import os
+
 
 def first_time():
+    try:
+        os.mkdir('db')
+    except FileExistsError:
+        print("Папка 'db' уже существует.")
+    except OSError as error:
+        print(f"Возникла ошибка при создании папки 'db': {error}")
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS base (
@@ -19,7 +30,7 @@ def first_time():
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
     data = cur.fetchall()
     if len(data) == 0:
-        saver('(150, 150)', 90, 'first_map')
+        saver('(150, 150)', 90, 'second_map')
     cur.execute("SELECT * FROM settings DESC LIMIT 1")
     data_set = cur.fetchall()
     if len(data_set) == 0:
@@ -31,9 +42,11 @@ def first_time():
 def saver(player_position, player_anglenow, map_now):
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
-    cur.execute("INSERT INTO base(pos, angle, time, map) VALUES (?, ?, ?, ?)", (str(player_position), player_anglenow, datetime.now(), map_now))
+    cur.execute("INSERT INTO base(pos, angle, time, map) VALUES (?, ?, ?, ?)",
+                (str(player_position), player_anglenow, datetime.now(), map_now))
     connection.commit()
     connection.close()
+
 
 def upload():
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
@@ -44,6 +57,16 @@ def upload():
     player_angle_new = data[0][1]
     return player_pos_new, player_angle_new
 
+
+def upload_map():
+    connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
+    data = cur.fetchall()
+    map_new = data[0][3]
+    return map_new
+
+
 def settings_saver(volume, sense):
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
@@ -52,9 +75,19 @@ def settings_saver(volume, sense):
     connection.commit()
     connection.close()
 
+
 def upload_settings():
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("SELECT * FROM settings DESC LIMIT 1")
     data = cur.fetchall()
     return data[0][0], data[0][1]
+
+
+def time_finder():
+    connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM base ORDER BY time LIMIT 1")
+    time_start = datetime.strptime(cur.fetchall()[0][2], "%Y-%m-%d %H:%M:%S.%f")
+    total_hours = (datetime.now() - time_start).total_seconds() / 3600
+    return f"{total_hours:.2f}"

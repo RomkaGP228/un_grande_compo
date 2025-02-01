@@ -5,6 +5,7 @@ import sys
 import pygame
 from data.params import *
 
+
 def load_image(name, colorkey=None):
     fullname = os.path.join('sprites', name)
     image = pygame.image.load(fullname)
@@ -18,13 +19,13 @@ def load_image(name, colorkey=None):
         image = image.convert_alpha()
     return image
 
+
 class SpriteClass:
     def __init__(self):
         self.sprites_list = {'barrel': load_image('test/img.png'),
                              'guy': [load_image(f"guy/{i}.png", -1) for i in range(8)],
                              'portal': load_image(f'portal/portal.png', -1)}
         self.obj_list = [SpriteObjClass(self.sprites_list['portal'], True, (8.7, 12.5), -3, 0.4)]
-
 
 
 class SpriteObjClass:
@@ -73,7 +74,3 @@ class SpriteObjClass:
             return (distance_to_sprite, sprite, sprite_pos)
         else:
             return (False,)
-
-
-
-

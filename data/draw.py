@@ -5,7 +5,8 @@ import pygame.font
 from data.params import *
 from data.button import ButtonClass
 from data.slider import Slider
-from data.saver import settings_saver, upload_settings
+from data.saver import settings_saver, upload_settings, time_finder
+from data.music import volume_change
 
 
 class Draw:
@@ -85,8 +86,8 @@ class Draw:
                                   image_path=pathlib.PurePath('images/button_start_image.png'), text='MENU',
                                   font=button_font)
         settings_button = ButtonClass(self.screen, 725, 600, width=100, height=100,
-                                  image_path=pathlib.PurePath('images/settings_image.png'), text='',
-                                  font=button_font)
+                                      image_path=pathlib.PurePath('images/settings_image.png'), text='',
+                                      font=button_font)
         save_button = ButtonClass(self.screen, 420, 600, width=100, height=100,
                                   image_path=pathlib.PurePath('images/save_image.png'), text='',
                                   font=button_font)
@@ -112,6 +113,7 @@ class Draw:
                     return
             elif exit_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
+                    saver(self.player.pos, self.player.angle, self.map_name)
                     pygame.quit()
                     sys.exit()
             elif menu_button.rect.collidepoint(curr_pos):
@@ -143,8 +145,8 @@ class Draw:
                                   image_path=pathlib.PurePath('images/button_start_image.png'), text='SAVE',
                                   font=button_font)
         cancel_button = ButtonClass(self.screen, 670, 520, width=150, height=80,
-                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='QUIT',
-                                  font=button_font)
+                                    image_path=pathlib.PurePath('images/button_start_image.png'), text='QUIT',
+                                    font=button_font)
         while self.settings_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -172,28 +174,33 @@ class Draw:
             elif save_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
                     settings_saver(volume_slider.get_value(), sense_slider.get_value())
+                    volume_change(volume_slider.get_value())
                     self.player.update()
                     return
             elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 self.settings_trigger = False
             pygame.display.flip()
+
     def win(self):
-        print('you win')
         self.win_trigger = True
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
+        text_font = pygame.font.Font('fonts/mneb.otf', 50)
         label_font = pygame.font.Font('fonts/mneb.otf', 145)
         exit_button = ButtonClass(self.screen, 420, 500, width=400, height=100,
                                   image_path=pathlib.PurePath('images/button_start_image.png'), text='EXIT',
                                   font=button_font)
+        time_delta = time_finder()
         while self.win_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-            self.screen.blit(self.win_picture, (0, 0), (30, 0, window_width, window_height))
+            self.screen.blit(self.win_picture, (0, 0), (0, 0, window_width, window_height))
             exit_button.draw()
             label = label_font.render('Y0U 3SC4P3D', 1, pygame.Color('orange'))
-            self.screen.blit(label, (100, 50))
+            time_played = text_font.render(f"Total gameplay time: {time_delta} hours", 1, pygame.Color("orange"))
+            self.screen.blit(time_played, (250, 270))
+            self.screen.blit(label, (200, 50))
             curr_pos = pygame.mouse.get_pos()
             curr_click = pygame.mouse.get_pressed()
             if exit_button.rect.collidepoint(curr_pos):
@@ -201,10 +208,3 @@ class Draw:
                     pygame.quit()
                     sys.exit()
             pygame.display.flip()
-
-
-
-
-
-
-

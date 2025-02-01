@@ -14,9 +14,6 @@ first_time()
 black = pygame.Color("Black")
 white = pygame.Color("White")
 
-
-
-
 # ray casting params
 view_field = pi / 3
 view_field_half = view_field / 2
@@ -32,10 +29,10 @@ texture_width = 1200
 texture_height = 1200
 texture_scale = texture_width // wall_size
 
-#sprite settings
+# sprite settings
 double_pi = 2 * math.pi
 center_ray = nums_rays // 2 - 1
 
 # player params
 player_pos, player_angle = upload()[0:2]
-player_speed = 3
+player_speed = 4

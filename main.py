@@ -1,30 +1,34 @@
 from data.player import *
 from data.ray_casting import *
 from data.draw import Draw
-from data.map import world_map_maker, first_map, second_map
+from data.map import world_map_maker, second_map, maps
 from data.sprites import *
 from data.saver import *
+from data.music import play_track
 
 if __name__ == '__main__':
     pygame.init()
+    pygame.mixer.init()
     pygame.display.set_caption('Un Grande Compo')
     window_size = window_width, window_height
     screen = pygame.display.set_mode(window_size)
     clock = pygame.time.Clock()
     first_time()
-
     player = Player()
     sprites = SpriteClass()
-    main_map = second_map
+    main_map = maps[upload_map()]
     world_map = world_map_maker(main_map)
-    draw_example = Draw(screen, world_map, player, 'first_map')
+    draw_example = Draw(screen, world_map, player, str(upload_map()))
     running = True
     draw_example.menu()
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                saver(player.pos, player.angle, draw_example.map_name)
         player.movement()
+        if not pygame.mixer.music.get_busy():
+            play_track()
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
             pygame.mouse.set_visible(True)
             draw_example.pause()
@@ -33,8 +37,12 @@ if __name__ == '__main__':
         if (800 <= player.pos[0] <= 900) and (1200 <= player.pos[1] <= 1300) and main_map == second_map:
             main_map = first_map
             world_map = world_map_maker(first_map)
-            draw_example.map_name = 'second_map'
+            draw_example.map_name = 'first_map'
             player.set_pos(1850, 1850)
+            player.set_angle(5)
+            sprites.obj_list.pop(-1)
+            sprites.obj_list.append(SpriteObjClass(sprites.sprites_list["guy"], False, (5.5, 18.5), -2, 0.5))
+        if main_map == first_map:
             sprites.obj_list.pop(-1)
             sprites.obj_list.append(SpriteObjClass(sprites.sprites_list["guy"], False, (5.5, 18.5), -2, 0.5))
         if (500 <= player.pos[0] <= 600) and (1800 <= player.pos[1] <= 1900) and main_map == first_map:

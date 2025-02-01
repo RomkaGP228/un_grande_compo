@@ -4,6 +4,7 @@ from data.params import *
 from data.map import collision_walls
 from data.saver import upload_settings
 
+
 class Player:
     def __init__(self):
         self.x, self.y = player_pos
@@ -15,9 +16,12 @@ class Player:
     @property
     def pos(self):
         return (int(self.x), int(self.y))
+
     def set_pos(self, position_x, position_y):
         self.x, self.y = position_x, position_y
 
+    def set_angle(self, angle):
+        self.angle = angle
 
     def detected_collision(self, dx, dy):
         next_rect = self.rect.copy()
@@ -39,12 +43,10 @@ class Player:
                 dx, dy = 0, 0
             elif delta_x > delta_y:
                 dy = 0
-            elif delta_x <delta_y:
+            elif delta_x < delta_y:
                 dx = 0
         self.x += dx
         self.y += dy
-
-
 
     def movement(self):
         self.keys_movement()
@@ -81,8 +83,6 @@ class Player:
             diff_mouse = pygame.mouse.get_pos()[0] - (window_width // 2)
             pygame.mouse.set_pos((window_width // 2, window_height // 2))
             self.angle += diff_mouse * self.sense
+
     def update(self):
-        self.sense = 0.0006 * (float(upload_settings()[-1]) + 1)
-
-
-
+        self.sense = 0.00006 * (float(upload_settings()[-1]) + 1)
