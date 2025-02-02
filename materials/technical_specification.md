@@ -11,16 +11,43 @@
     - Для звукового ряда планируется Lo-fi nightcore песни. При действии с программистами также будут определенные
       звуки.
     - Окно паузы игры с возможностью сохранения текущего места.
-4.
+4. 805 строк кода за спиной...
 5. Program code plan:
    - Библиотеки:
       - Pygame
       - math
+      - pathlib
+      - os
+      - sys
    - Классы:
       - Player
       - Draw
+      - SpriteClass
+      - SpriteObject
+      - Button
+      - Slider
    - Функции:
-   - Константы:
-      - window_width
-      - window_height
-      - цвета
+      - play_track
+      - volume_change
+      - first_time
+      - upload
+      - saver
+      - upload_map
+      - settings_saver
+      - upload_settings
+      - time_finder
+      - load_image
+      - ray_casting
+      - mapping
+   - Также потребовались в проекте глобальные переменные для упрощения написания кода:
+      - colors
+      - ray_casting constants
+      - sprite settings
+      - window settings
+      - player params
+6. Graphic Interface
+   ![](photo_5_2025-02-02_21-54-39.jpg)
+   ![](photo_4_2025-02-02_21-54-39.jpg)
+   ![](photo_6_2025-02-02_21-54-39.jpg)
+   ![](photo_7_2025-02-02_21-54-39.jpg)
+   ![](photo_3_2025-02-02_21-54-39.jpg) 
