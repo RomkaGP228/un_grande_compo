@@ -1,3 +1,5 @@
+[<img src="https://img.shields.io/badge/python-3.11%20%7C%203.12-blue">](https://www.python.org/downloads/)
+
 # Un Grande Compo
 ## О проекте:
 - Игра написана полостью на python, основная библиотека- PyGame.
