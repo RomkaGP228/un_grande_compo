@@ -21,9 +21,12 @@ class Draw:
         self.pause_trigger = False
         self.settings_trigger = False
         self.win_trigger = False
+        self.about_trigger = False
         self.win_picture = pygame.image.load(pathlib.PurePath('images/end_image.jpg')).convert()
         self.pause_picture = pygame.image.load(pathlib.PurePath('images/pause_image.png')).convert()
+        self.about_window_picture = pygame.image.load(pathlib.PurePath('images/about_window_image.png')).convert()
         self.menu_picture = pygame.image.load(pathlib.PurePath('images/menu_image.jpg')).convert()
+        self.qr_code_picture = pygame.image.load(pathlib.PurePath('images/qr_code_image.png')).convert()
         self.textures = {1: pygame.image.load(pathlib.PurePath("textures/texture_1.jpg")).convert(),
                          2: pygame.image.load(pathlib.PurePath("textures/texture_2.jpg")).convert(),
                          3: pygame.image.load(pathlib.PurePath("textures/texture_3.jpg")).convert(),
@@ -60,8 +63,8 @@ class Draw:
             self.screen.blit(self.menu_picture, (0, 0), (30, 0, window_width, window_height))
             start_button.draw()
             exit_button.draw()
-            label = label_font.render('Un grande compo', 1, pygame.Color('orange'))
-            self.screen.blit(label, (100, 50))
+            label = label_font.render('UN GRANDE COMPO', 1, pygame.Color('orange'))
+            self.screen.blit(label, (20, 30))
             curr_pos = pygame.mouse.get_pos()
             curr_click = pygame.mouse.get_pressed()
             if start_button.rect.collidepoint(curr_pos):
@@ -92,9 +95,13 @@ class Draw:
         save_button = ButtonClass(self.screen, 420, 600, width=100, height=100,
                                   image_path=pathlib.PurePath('images/save_image.png'), text='',
                                   font=button_font)
+        about_button = ButtonClass(self.screen, 575, 600, width=100, height=95,
+                                   image_path=pathlib.PurePath('images/about_image.png'), text='',
+                                   font=button_font)
         while self.pause_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    saver(self.player.pos, self.player.angle, self.map_name)
                     pygame.quit()
                     sys.exit()
             self.screen.blit(self.pause_picture, (0, 0), (-415, -137, window_width, window_height))
@@ -103,6 +110,7 @@ class Draw:
             exit_button.draw()
             menu_button.draw()
             save_button.draw()
+            about_button.draw()
             settings_button.draw()
             label = label_font.render('Pause', 1, pygame.Color('orange'))
             self.screen.blit(label, (443, 100))
@@ -121,6 +129,10 @@ class Draw:
                 if curr_click[0]:
                     self.menu_trigger = True
                     self.menu()
+                    return
+            elif about_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    self.about()
                     return
             elif save_button.rect.collidepoint(curr_pos):
                 if curr_click[0]:
@@ -151,6 +163,7 @@ class Draw:
         while self.settings_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    saver(self.player.pos, self.player.angle, self.map_name)
                     pygame.quit()
                     sys.exit()
                 sense_slider.handle_event(event)
@@ -210,4 +223,44 @@ class Draw:
                     os.remove(pathlib.PurePath("db/database.db"))
                     os.rmdir(pathlib.PurePath("db"))
                     sys.exit()
+            pygame.display.flip()
+
+    def about(self):
+        self.about_trigger = True
+        label_font = pygame.font.Font('fonts/mneb.otf', 120)
+        button_font = pygame.font.Font('fonts/rafale_ru.otf', 60)
+        text_font = pygame.font.Font('fonts/mneb.otf', 50)
+        text_font_1 = pygame.font.Font('fonts/mneb.otf', 30)
+        exit_button = ButtonClass(self.screen, 800, 600, width=400, height=100,
+                                  image_path=pathlib.PurePath('images/button_start_image.png'), text='EXIT',
+                                  font=button_font)
+        while self.about_trigger:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            self.screen.blit(self.about_window_picture, (0, 0), (0, 0, window_width, window_height))
+            self.screen.blit(self.qr_code_picture, (0, 0), (0, -455, window_width, window_height))
+            exit_button.draw()
+            label = label_font.render('About', 1, pygame.Color('orange'))
+            repo_label = text_font.render('Repo', 1, black)
+            plot_label = text_font.render('Goals', 1, black)
+            control_text_1 = text_font_1.render('wasd buttons - Base character control.', 1, black)
+            control_text_2 = text_font_1.render('Mouse or arrows buttons - camera control.', 1, black)
+            plot_text = text_font_1.render('Your main goal is to find the goal and the military', 1, white)
+            control_label = text_font.render('Control', 1, black)
+            self.screen.blit(repo_label, (70, 400))
+            self.screen.blit(plot_label, (230, 150))
+            self.screen.blit(plot_text, (20, 230))
+            self.screen.blit(control_label, (830, 150))
+            self.screen.blit(label, (470, 0))
+            self.screen.blit(control_text_1, (670, 230))
+            self.screen.blit(control_text_2, (670, 300))
+            curr_pos = pygame.mouse.get_pos()
+            curr_click = pygame.mouse.get_pressed()
+            if exit_button.rect.collidepoint(curr_pos):
+                if curr_click[0]:
+                    self.about_trigger = False
+            elif pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                self.about_trigger = False
             pygame.display.flip()
