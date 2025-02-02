@@ -1,5 +1,4 @@
 import math
-
 import pygame
 from math import pi, tan
 from data.saver import upload, first_time
@@ -9,7 +8,6 @@ window_width = 1200
 window_height = 700
 
 first_time()
-
 # base colors
 black = pygame.Color("Black")
 white = pygame.Color("White")
