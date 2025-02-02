@@ -11,7 +11,9 @@ from data.music import volume_change
 
 
 class Draw:
+    """Класс для отрисовки окон и взаимодействий"""
     def __init__(self, screen, world_map, player, map_name):
+        # основные параметры
         self.screen = screen
         self.map_name = map_name
         self.player = player
@@ -35,17 +37,20 @@ class Draw:
                          6: pygame.image.load(pathlib.PurePath("textures/texture_6.jpg")).convert()}
 
     def draw_world(self, world_objs):
+        # для отрисовки мира
         for i in sorted(world_objs, key=lambda x: x[0], reverse=True):
             if i[0]:
                 _, obj, obj_pos = i
                 self.screen.blit(obj, obj_pos)
 
     def draw_fps(self, clock):
+        # для отрисовки фпс
         fps = str(int(clock.get_fps()))
         fps_render = self.font.render(fps, 0, pygame.Color('red'))
         self.screen.blit(fps_render, (window_width - 55, 0))
 
     def menu(self):
+        # для отрисовки главного меню игры
         self.menu_trigger = True
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
         label_font = pygame.font.Font('fonts/mneb.otf', 145)
@@ -77,6 +82,7 @@ class Draw:
             pygame.display.flip()
 
     def pause(self):
+        # для отрисовки меню паузы
         self.pause_trigger = True
         label_font = pygame.font.Font('fonts/mneb.otf', 145)
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
@@ -148,6 +154,7 @@ class Draw:
             pygame.display.flip()
 
     def settings(self):
+        # для отрисовки меню настроек
         self.settings_trigger = True
         label_font = pygame.font.Font('fonts/mneb.otf', 120)
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 60)
@@ -196,6 +203,7 @@ class Draw:
             pygame.display.flip()
 
     def win(self):
+        # для отрисовки окна после прохождения
         self.win_trigger = True
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 70)
         text_font = pygame.font.Font('fonts/mneb.otf', 50)
@@ -226,6 +234,7 @@ class Draw:
             pygame.display.flip()
 
     def about(self):
+        # для отрисовки меню справки
         self.about_trigger = True
         label_font = pygame.font.Font('fonts/mneb.otf', 120)
         button_font = pygame.font.Font('fonts/rafale_ru.otf', 60)

@@ -3,6 +3,7 @@ from data.params import *
 
 
 def load_image(name, colorkey=None):
+    # для загрузки картинок и удаления их фона
     fullname = os.path.join('sprites', name)
     image = pygame.image.load(fullname)
     # если файл не существует, то выходим
@@ -17,6 +18,7 @@ def load_image(name, colorkey=None):
 
 
 class SpriteClass:
+    """Класс содержащий информацию о спрайтах"""
     def __init__(self):
         self.sprites_list = {
             'guy': [load_image(f"guy/{i}.png", -1) for i in range(8)],
@@ -25,6 +27,7 @@ class SpriteClass:
 
 
 class SpriteObjClass:
+    """Класс реализующий все параметры спрайта"""
     def __init__(self, object, static, pos, shift, scale):
         self.object = object
         self.static = static

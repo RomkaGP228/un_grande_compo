@@ -3,6 +3,7 @@ import json
 import pathlib
 
 with open(pathlib.PurePath("levels1/levels.json"), mode='r') as json_map_file:
+    # для загрузки json файла где хранятся карты
     maps = json.load(json_map_file)
     first_map = maps["first_map"]
     second_map = maps["second_map"]
@@ -13,6 +14,7 @@ collision_walls = []
 
 
 def world_map_maker(new_map):
+    # для создания карты
     wall_size = 100
     world_map = {}
     collision_walls.clear()

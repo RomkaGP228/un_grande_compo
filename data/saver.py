@@ -5,6 +5,7 @@ import os
 
 
 def first_time():
+    # для создания бд при первом запуске
     try:
         os.mkdir('db')
     except FileExistsError:
@@ -36,6 +37,7 @@ def first_time():
 
 
 def saver(player_position, player_anglenow, map_now):
+    # для последующих сохранений
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("INSERT INTO base(pos, angle, time, map) VALUES (?, ?, ?, ?)",
@@ -45,6 +47,7 @@ def saver(player_position, player_anglenow, map_now):
 
 
 def upload():
+    # для загрузки данных из бд (позиция и угол)
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
@@ -56,6 +59,7 @@ def upload():
 
 
 def upload_map():
+    # для загрузки текущей карты
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("SELECT * FROM base ORDER BY time DESC LIMIT 1")
@@ -66,6 +70,7 @@ def upload_map():
 
 
 def settings_saver(volume, sense):
+    # для сохранений текущих настроек
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("UPDATE settings SET volume = ?, sensitivity = ?",
@@ -75,6 +80,7 @@ def settings_saver(volume, sense):
 
 
 def upload_settings():
+    # для выгрузки текущих настроек
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("SELECT * FROM settings DESC LIMIT 1")
@@ -84,6 +90,7 @@ def upload_settings():
 
 
 def time_finder():
+    # для нахождения времени прохождения
     connection = sqlite3.connect(pathlib.PurePath("db/database.db"))
     cur = connection.cursor()
     cur.execute("SELECT * FROM base ORDER BY time LIMIT 1")

@@ -6,7 +6,9 @@ from data.saver import upload_settings
 
 
 class Player:
+    """Класс для всего связанного с игроком"""
     def __init__(self):
+        # основные параметры
         self.x, self.y = player_pos
         self.angle = player_angle
         self.sense = 0.00006 * (float(upload_settings()[-1]) + 1)
@@ -15,15 +17,18 @@ class Player:
 
     @property
     def pos(self):
+        # для возврата текущей позиции
         return (int(self.x), int(self.y))
 
     def set_pos(self, position_x, position_y):
+        # для установки новой позиции
         self.x, self.y = position_x, position_y
 
     def set_angle(self, angle):
         self.angle = angle
 
     def detected_collision(self, dx, dy):
+        # для нахождения коллизий
         next_rect = self.rect.copy()
         next_rect.move_ip(dx, dy)
         hitted = next_rect.collidelistall(collision_walls)
@@ -49,12 +54,14 @@ class Player:
         self.y += dy
 
     def movement(self):
+        # для осуществления движения
         self.keys_movement()
         self.mouse_movement()
         self.rect.center = self.x, self.y
         self.angle %= pi * 2
 
     def keys_movement(self):
+        # для отработки клавишь и мышки при перемещении
         keykaps = pygame.key.get_pressed()
         if keykaps[pygame.K_w]:
             dx = player_speed * cos(self.angle)

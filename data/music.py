@@ -5,6 +5,7 @@ from data.saver import upload_settings
 
 
 def play_track():
+    # для проигрывания треков, рандомный выбор без повторений
     bimbo = ''
     lst = ['song_1', 'song_2', 'song_3']
     track = choice(lst)

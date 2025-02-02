@@ -4,10 +4,12 @@ from data.map import wrld_width, wrld_height
 
 
 def mapping(x, y):
+    # для нахождения текущей позиции игрока в квадрате
     return (x // wall_size) * wall_size, (y // wall_size) * wall_size
 
 
 def ray_casting(player, world_map, textures):
+    # для отрисовки мира вокруг (та самая технология ray casting)
     walls = []
     angle = player.angle - view_field_half
     x0, y0 = player.pos
